@@ -9,55 +9,69 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args
 
+# Декоратор для обробки помилок введення
+def input_error(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError:
+            return "Give me name and phone please."
+        except KeyError:
+            return "Contact not found."
+        except IndexError:
+            return "Not enough arguments provided."
+    return inner
+
 # Додавання контакту
+@input_error
 def add_contact(args, contacts):
     if len(args) != 2:
-        return "Invalid format. Use: add <name> <phone>"
-    
+        raise ValueError
     name, phone = args
     contacts[name] = phone
     return f"Contact {name} added."
 
 # Отримання контакту
+@input_error
 def get_contact(name, contacts):
     return contacts.get(name)
 
 # Редагування контакту
+@input_error
 def edit_contact(args, contacts):
     if len(args) != 2:
-        return "Invalid format. Use: edit <name> <new_phone>"
-    
+        raise ValueError
     name, phone = args
     if name in contacts:
         contacts[name] = phone
         return f"Contact {name} updated."
-    return f"Contact {name} not found."
+    raise KeyError
 
 # Видалення контакту
+@input_error
 def delete_contact(args, contacts):
     if len(args) != 1:
-        return "Invalid format. Use: delete <name>"
-    
+        raise ValueError
     name = args[0]
     if name in contacts:
         del contacts[name]
         return f"Contact {name} deleted."
-    return f"Contact {name} not found."
+    raise KeyError
 
 # Перегляд контакту
+@input_error
 def view_contact(args, contacts):
     if len(args) != 1:
-        return "Invalid format. Use: view <name>"
-    
+        raise ValueError
     name = args[0]
     contact = get_contact(name, contacts)
     return f"{name}: {contact}" if contact else f"Contact {name} not found."
 
 # Пошук контактів
+@input_error
 def search_contacts(args, contacts):
     if len(args) != 1:
-        return "Invalid format. Use: search <term>"
-    
+        raise ValueError
     term = args[0]
     results = {name: phone for name, phone in contacts.items() if term in name or term in phone}
     
@@ -66,12 +80,14 @@ def search_contacts(args, contacts):
     return "No matching contacts found."
 
 # Виведення всіх контактів
+@input_error
 def list_contacts(contacts):
     if not contacts:
         return "No contacts available."
     return "\n".join(f"{name}: {phone}" for name, phone in contacts.items())
 
 # Допомога
+@input_error
 def show_help():
     commands = {
         "hello": "Say hi",
