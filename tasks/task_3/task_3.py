@@ -40,7 +40,7 @@ def main():
     if len(sys.argv) == 3:
         level = sys.argv[2].upper()
         logs = filter_logs_by_level(logs, level)
-        print(f"\nДеталі логів для рівня '{level}':")
+
         for log in logs:
             print(f"{log['message']}")
 
