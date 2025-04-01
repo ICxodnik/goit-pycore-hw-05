@@ -11,7 +11,7 @@ def sum_profit(text: str, func: Callable):
 
 
 def find_floats(text):
-    pattern = r'-?\d+\.\d+|-?\d+'  # Шукає дійсні та цілі числа
+    pattern = r'\b(-?\d+\.\d+|-?\d+)\b'  # Шукає дійсні та цілі числа
     return re.findall(pattern, text)
 
 
