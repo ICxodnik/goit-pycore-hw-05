@@ -1,4 +1,4 @@
-def caching_fibonacci():
+def get_fibonacci_range():
     cache = {0: 0, 1: 1}  # Початкові значення Фібоначчі
 
     def fibonacci(n):
@@ -15,7 +15,7 @@ def caching_fibonacci():
 
 
 if __name__ == "__main__":
-    fib = caching_fibonacci()
+    fib = get_fibonacci_range()
     
     # Отримуємо генератор для 10-го числа Фібоначчі
     for num in fib(10):
